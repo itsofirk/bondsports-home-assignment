@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Person } from './person.entity';
+import { Transaction } from './transaction.entity';
 
 @Entity()
 export class Account {
@@ -14,4 +15,7 @@ export class Account {
 
   @Column('decimal')
   dailyWithdrawalLimit: number;
+
+  @OneToMany(() => Transaction, transaction => transaction.account)
+  transactions: Transaction[];
 }
