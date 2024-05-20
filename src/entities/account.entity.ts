@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'ty
 import { Person } from './person.entity';
 import { Transaction } from './transaction.entity';
 
-@Entity()
+@Entity('accounts')
 export class Account {
   @PrimaryGeneratedColumn()
   accountId: number;
