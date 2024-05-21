@@ -64,9 +64,12 @@ export class AccountService {
   async deposit(accountId: any, amount: number) {
     const account = await this.accountRepository.findOneBy({ accountId });
     if (!account) throw new Error('Account not found');
-
-    account.balance += amount;
-    return this.accountRepository.save(account);
+    
+    await this.dataSource.transaction(async manager => {
+      account.balance += amount;
+      await manager.save(account);
+      await this.transactionService.createTransaction(manager, accountId, amount);
+    });
   }
 
   async withdraw(accountId: any, amount: number) {
