@@ -45,7 +45,7 @@ export class AccountController {
     const transactions = await this.accountService.getAccountTransactions(accountId);
     return transactions.map(transaction => ({
       transactionId: transaction.transactionId,
-      accountId: transaction.accountId,
+      accountId: transaction.account.accountId,
       value: transaction.value,
       transactionDate: transaction.transactionDate,
     }));

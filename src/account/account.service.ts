@@ -23,4 +23,23 @@ export class AccountService {
     const account = this.accountRepository.create({ person, balance, dailyWithdrawalLimit });
     return this.accountRepository.save(account);
   }
+
+  getAccountTransactions(accountId: any): Transaction[] | PromiseLike<Transaction[]> {
+    throw new Error('Method not implemented.');
+  }
+  activate(accountId: any) {
+    throw new Error('Method not implemented.');
+  }
+  deactivate(accountId: any) {
+    throw new Error('Method not implemented.');
+  }
+  getBalance(accountId: any): number | PromiseLike<number> {
+    throw new Error('Method not implemented.');
+  }
+  deposit(accountId: any, amount: number) {
+    throw new Error('Method not implemented.');
+  }
+  withdraw(accountId: any, amount: number) {
+    throw new Error('Method not implemented.');
+  }
 }
