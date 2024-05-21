@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Account } from './account.entity';
+import { DecimalColumn } from 'src/common/decorators/decimal-column.decorator';
 
 @Entity('transactions')
 export class Transaction {
@@ -10,7 +11,7 @@ export class Transaction {
   @JoinColumn({ name: 'accountId' })
   account: Account;
 
-  @Column('decimal')
+  @DecimalColumn()
   value: number;
 
   @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })

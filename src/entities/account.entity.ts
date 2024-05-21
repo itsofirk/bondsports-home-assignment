@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Person } from './person.entity';
+import { DecimalColumn } from 'src/common/decorators/decimal-column.decorator';
 
 @Entity('accounts')
 export class Account {
@@ -10,10 +11,10 @@ export class Account {
   @JoinColumn({ name: 'personId' })
   person: Person;
 
-  @Column('decimal')
+  @DecimalColumn()
   balance: number;
 
-  @Column('decimal')
+  @DecimalColumn()
   dailyWithdrawalLimit: number;
 
   @Column()
