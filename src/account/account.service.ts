@@ -16,11 +16,11 @@ export class AccountService {
     private transactionRepository: Repository<Transaction>,
   ) { }
 
-  async createAccount(personId: number, balance: number, dailyWithdrawalLimit: number): Promise<Account> {
+  async createAccount(personId: number, balance: number, dailyWithdrawalLimit: number, activeFlag: boolean, accountType: number): Promise<Account> {
     const person = await this.personRepository.findOneBy({ personId });
     if (!person) throw new Error('Person not found');
 
-    const account = this.accountRepository.create({ person, balance, dailyWithdrawalLimit });
+    const account = this.accountRepository.create({ person, balance, dailyWithdrawalLimit, activeFlag, accountType });
     return this.accountRepository.save(account);
   }
 

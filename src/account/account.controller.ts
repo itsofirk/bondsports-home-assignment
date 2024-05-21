@@ -11,7 +11,13 @@ export class AccountController {
 
   @Post()
   async createAccount(@Body() newAccount: CreateAccountDto): Promise<Account> {
-    return this.accountService.createAccount(newAccount.personId, newAccount.balance, newAccount.dailyWithdrawalLimit);
+    return this.accountService.createAccount(
+      newAccount.personId, 
+      newAccount.balance,
+      newAccount.dailyWithdrawalLimit,
+      newAccount.activeFlag,
+      newAccount.accountType
+    );
   }
 
   @Put(':accountId/withdraw')
