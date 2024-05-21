@@ -22,6 +22,6 @@ import { TransactionService } from './transaction/transaction.service';
     AccountModule,
   ],
   controllers: [AppController],
-  providers: [AppService, TransactionService],
+  providers: [AppService],
 })
 export class AppModule {}

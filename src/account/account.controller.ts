@@ -47,7 +47,7 @@ export class AccountController {
   }
 
   @Get(':accountId/transactions')
-  async getAccountTransactions(@AccountId() accountId): Promise<TransactionDto[]> {
+  async getAccountTransactions(@AccountId() accountId) {
     const transactions = await this.accountService.getAccountTransactions(accountId);
     return transactions.map(transaction => ({
       transactionId: transaction.transactionId,

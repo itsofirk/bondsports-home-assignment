@@ -5,12 +5,10 @@ import { Transaction } from '../entities/transaction.entity';
 import { Account } from '../entities/account.entity';
 
 @Injectable()
-export class TransactionsService {
+export class TransactionService {
   constructor(
     @InjectRepository(Transaction)
-    private transactionRepository: Repository<Transaction>,
-    @InjectRepository(Account)
-    private accountRepository: Repository<Account>,
+    private transactionRepository: Repository<Transaction>
   ) {}
 
   async getDailyWithdrawalSum(accountId: number): Promise<number> {

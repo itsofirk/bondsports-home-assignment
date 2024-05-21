@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { Account } from '../entities/account.entity';
 import { Person } from '../entities/person.entity';
 import { Transaction } from '../entities/transaction.entity';
+import { TransactionService } from '../transaction/transaction.service';
+
 
 @Injectable()
 export class AccountService {
@@ -12,8 +14,7 @@ export class AccountService {
     private accountRepository: Repository<Account>,
     @InjectRepository(Person)
     private personRepository: Repository<Person>,
-    @InjectRepository(Transaction)
-    private transactionRepository: Repository<Transaction>,
+    private transactionService: TransactionService
   ) { }
 
   async createAccount(personId: number, balance: number, dailyWithdrawalLimit: number, activeFlag: boolean, accountType: number): Promise<Account> {
