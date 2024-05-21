@@ -14,10 +14,10 @@ export class AccountService {
     private personRepository: Repository<Person>,
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
-  ) {}
+  ) { }
 
   async createAccount(personId: number, balance: number, dailyWithdrawalLimit: number): Promise<Account> {
-    const person = await this.personRepository.findOneBy({personId});
+    const person = await this.personRepository.findOneBy({ personId });
     if (!person) throw new Error('Person not found');
 
     const account = this.accountRepository.create({ person, balance, dailyWithdrawalLimit });
@@ -27,19 +27,51 @@ export class AccountService {
   getAccountTransactions(accountId: any): Transaction[] | PromiseLike<Transaction[]> {
     throw new Error('Method not implemented.');
   }
-  activate(accountId: any) {
-    throw new Error('Method not implemented.');
+  
+  async activate(accountId: any) {
+    const account = await this.accountRepository.findOneBy({ accountId });
+    if (!account) throw new Error('Account not found');
+    
+    if (account.activeFlag){
+       // TODO: log that account is already active
+       return account
+    }
+    account.activeFlag = true;
+    return this.accountRepository.save(account);
   }
-  deactivate(accountId: any) {
-    throw new Error('Method not implemented.');
+
+  async deactivate(accountId: any) {
+    const account = await this.accountRepository.findOneBy({ accountId });
+    if (!account) throw new Error('Account not found');
+    
+    if (!account.activeFlag){
+       // TODO: log that account is already inactive
+       return account;
+    }
+    account.activeFlag = false;
+    return this.accountRepository.save(account);
   }
-  getBalance(accountId: any): number | PromiseLike<number> {
-    throw new Error('Method not implemented.');
+
+  async getBalance(accountId: any): Promise<number> {
+    const account = await this.accountRepository.findOneBy({ accountId });
+    if (!account) throw new Error('Account not found');
+
+    return account.balance
   }
-  deposit(accountId: any, amount: number) {
-    throw new Error('Method not implemented.');
+
+  async deposit(accountId: any, amount: number) {
+    const account = await this.accountRepository.findOneBy({ accountId });
+    if (!account) throw new Error('Account not found');
+
+    account.balance += amount;
+    return this.accountRepository.save(account);
   }
-  withdraw(accountId: any, amount: number) {
-    throw new Error('Method not implemented.');
+  async withdraw(accountId: any, amount: number) {
+    const account = await this.accountRepository.findOneBy({ accountId });
+    if (!account) throw new Error('Account not found');
+    if (account.balance < amount) throw new Error('Insufficient funds');
+    
+    account.balance -= amount;
+    return this.accountRepository.save(account);
   }
 }
