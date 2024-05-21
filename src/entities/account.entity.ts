@@ -15,4 +15,13 @@ export class Account {
 
   @Column('decimal')
   dailyWithdrawalLimit: number;
+
+  @Column()
+  activeFlag: boolean;
+
+  @Column('int')
+  accountType: number;
+
+  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
+  createDate: Date;
 }

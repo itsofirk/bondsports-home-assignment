@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('persons')
 export class Person {
@@ -12,5 +12,5 @@ export class Person {
   document: string;
 
   @Column('date')
-  birthDate: string;
+  birthDate: Date;
 }
