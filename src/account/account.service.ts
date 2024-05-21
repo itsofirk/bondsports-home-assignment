@@ -76,7 +76,7 @@ export class AccountService {
    
     const dailyWithdrawalSum = await this.transactionService.getDailyWithdrawalSum(accountId);
     if (dailyWithdrawalSum + amount > account.dailyWithdrawalLimit) throw new Error('Daily withdrawal limit exceeded');
-    if (account.balance < amount) throw new Error('Insufficient balance');
+    if (account.balance <= amount) throw new Error('Insufficient balance');
 
     await this.dataSource.transaction(async manager => {
       account.balance -= amount;
