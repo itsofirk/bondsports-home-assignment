@@ -36,7 +36,7 @@ export class AccountController {
   }
 
   @Put(':accountId/activate')
-  async deactivate(@AccountId() accountId) {
+  async activate(@AccountId() accountId) {
     return this.accountService.deactivate(accountId);
   }
 
