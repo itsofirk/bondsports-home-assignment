@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Account } from '../entities/account.entity';
 import { Person } from '../entities/person.entity';
 import { Transaction } from '../entities/transaction.entity';
@@ -10,6 +10,7 @@ import { TransactionService } from '../transaction/transaction.service';
 @Injectable()
 export class AccountService {
   constructor(
+    private dataSource: DataSource,
     @InjectRepository(Account)
     private accountRepository: Repository<Account>,
     @InjectRepository(Person)
@@ -69,12 +70,18 @@ export class AccountService {
   }
 
   async withdraw(accountId: any, amount: number) {
-    // TODO: check daily withdrawal limit
     const account = await this.accountRepository.findOneBy({ accountId });
     if (!account) throw new Error('Account not found');
     if (account.balance < amount) throw new Error('Insufficient funds');
-    
-    account.balance -= amount;
-    return this.accountRepository.save(account);
+   
+    const dailyWithdrawalSum = await this.transactionService.getDailyWithdrawalSum(accountId);
+    if (dailyWithdrawalSum + amount > account.dailyWithdrawalLimit) throw new Error('Daily withdrawal limit exceeded');
+    if (account.balance < amount) throw new Error('Insufficient balance');
+
+    await this.dataSource.transaction(async manager => {
+      account.balance -= amount;
+      await this.accountRepository.save(account);
+      await this.transactionService.createTransaction(manager, accountId, -amount);
+    })
   }
 }

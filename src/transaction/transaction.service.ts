@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThan, LessThan } from 'typeorm';
+import { Repository, EntityManager } from 'typeorm';
 import { Transaction } from '../entities/transaction.entity';
 import { Account } from '../entities/account.entity';
 
@@ -26,12 +26,11 @@ export class TransactionService {
     return Math.abs(sum) || 0;
   }
 
-  async createTransaction(accountId: number, value: number): Promise<Transaction> {
-    const transaction = this.transactionRepository.create({
+  async createTransaction(manager: EntityManager, accountId: number, value: number): Promise<Transaction> {
+    const transaction = manager.create(Transaction, {
     account:{accountId},
-      value,
-      transactionDate: new Date(),
+      value
     });
-    return this.transactionRepository.save(transaction);
+    return manager.save(Transaction, transaction);
   }
 }
