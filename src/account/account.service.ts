@@ -66,7 +66,9 @@ export class AccountService {
     account.balance += amount;
     return this.accountRepository.save(account);
   }
+
   async withdraw(accountId: any, amount: number) {
+    // TODO: check daily withdrawal limit
     const account = await this.accountRepository.findOneBy({ accountId });
     if (!account) throw new Error('Account not found');
     if (account.balance < amount) throw new Error('Insufficient funds');
