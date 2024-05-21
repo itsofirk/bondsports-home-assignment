@@ -1,13 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Person } from './person.entity';
-import { Transaction } from './transaction.entity';
 
 @Entity('accounts')
 export class Account {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   accountId: number;
 
-  @ManyToOne(() => Person, person => person.accounts)
+  @ManyToOne(() => Person)
+  @JoinColumn({ name: 'personId' })
   person: Person;
 
   @Column('decimal')
@@ -15,7 +15,4 @@ export class Account {
 
   @Column('decimal')
   dailyWithdrawalLimit: number;
-
-  @OneToMany(() => Transaction, transaction => transaction.account)
-  transactions: Transaction[];
 }

@@ -1,17 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Account } from './account.entity';
 
 @Entity('transactions')
 export class Transaction {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   transactionId: number;
 
-  @ManyToOne(() => Account, account => account.transactions)
+  @ManyToOne(() => Account)
+  @JoinColumn({ name: 'accountId' })
   account: Account;
 
   @Column('decimal')
   value: number;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
   transactionDate: Date;
 }

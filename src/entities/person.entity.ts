@@ -1,9 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Account } from './account.entity';
 
 @Entity('persons')
 export class Person {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   personId: number;
 
   @Column()
@@ -12,9 +11,6 @@ export class Person {
   @Column()
   document: string;
 
-  @Column({ nullable: true })
-  birthDate: Date;
-
-  @OneToMany(() => Account, account => account.person)
-  accounts: Account[];
+  @Column('date')
+  birthDate: string;
 }
