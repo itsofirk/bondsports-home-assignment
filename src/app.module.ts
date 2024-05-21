@@ -15,8 +15,8 @@ import { AppService } from './app.service';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
+      entities: [__dirname + '/entities/*.entity{.ts,.js}'],
       synchronize: true, // Only for development, disable in production
-      ssl: false
     }),
     AccountModule,
   ],
