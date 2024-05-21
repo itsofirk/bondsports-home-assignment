@@ -2,6 +2,7 @@ import { Controller, Post, Body, Put, Param, Get, ParseIntPipe } from '@nestjs/c
 import { AccountService } from './account.service';
 import { Account } from '../entities/account.entity';
 import { CreateAccountDto } from './dto/create-account.dto';
+import { AmountDto } from './dto/amount.dto';
 import { AccountId } from '../common/decorators/account-id.decorator';
 
 
@@ -21,13 +22,13 @@ export class AccountController {
   }
 
   @Put(':accountId/withdraw')
-  async withdraw(@AccountId() accountId, @Body() { amount }: { amount: number }) {
-    return this.accountService.withdraw(accountId, amount);
+  async withdraw(@AccountId() accountId, @Body() amountDto: AmountDto) {
+    return this.accountService.withdraw(accountId, amountDto.amount);
   }
 
   @Put(':accountId/deposit')
-  async deposit(@AccountId() accountId, @Body() { amount }: { amount: number }) {
-    return this.accountService.deposit(accountId, amount);
+  async deposit(@AccountId() accountId, @Body() amountDto: AmountDto) {
+    return this.accountService.deposit(accountId, amountDto.amount);
   }
 
   @Get(':accountId/balance')
