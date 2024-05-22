@@ -63,6 +63,7 @@ export class AccountService {
   async deposit(accountId: any, amount: number) {
     const account = await this.accountRepository.findOneBy({ accountId });
     if (!account) throw new Error('Account not found');
+    if (!account.activeFlag) throw new Error('Account not active');
     
     await this.dataSource.transaction(async manager => {
       account.balance += amount;
@@ -74,6 +75,7 @@ export class AccountService {
   async withdraw(accountId: any, amount: number) {
     const account = await this.accountRepository.findOneBy({ accountId });
     if (!account) throw new Error('Account not found');
+    if (!account.activeFlag) throw new Error('Account not active');
     if (account.balance < amount) throw new Error('Insufficient funds');
    
     const dailyWithdrawalSum = await this.transactionService.getDailyWithdrawalSum(accountId);
