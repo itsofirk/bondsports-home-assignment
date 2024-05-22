@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, EntityManager } from 'typeorm';
+import { Repository, EntityManager, FindOptionsWhere, Between } from 'typeorm';
 import { Transaction } from '../entities/transaction.entity';
 import { Account } from '../entities/account.entity';
 
@@ -28,16 +28,26 @@ export class TransactionService {
 
   async createTransaction(manager: EntityManager, accountId: number, value: number): Promise<Transaction> {
     const transaction = manager.create(Transaction, {
-    account:{accountId},
+      account: { accountId },
       value
     });
     return manager.save(Transaction, transaction);
   }
 
-  async getAccountTransactions(accountId: any): Promise<Transaction[]> {
+  async getAccountTransactions(accountId: any, from?: Date, to?: Date): Promise<Transaction[]> {
+    if (!from)
+      from = new Date(0);
+    if (!to)
+      to = new Date();
+
+    const where: FindOptionsWhere<Transaction> = {
+      account: { accountId },
+      transactionDate: Between(from, to),
+    }
+    
     return await this.transactionRepository.find({
-       where: { account: { accountId } },
-       relations: ['account'],
-      });
+      where,
+      relations: ['account'],
+    });
   }
 }

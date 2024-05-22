@@ -26,11 +26,11 @@ export class AccountService {
     return this.accountRepository.save(account);
   }
 
-  async getAccountTransactions(accountId: any): Promise<Transaction[]> {
+  async getAccountTransactions(accountId: any, from?: Date, to?: Date): Promise<Transaction[]> {
     const account = await this.accountRepository.findOneBy({ accountId });
     if (!account) throw new Error('Account not found');
     
-    return await this.transactionService.getAccountTransactions(accountId);
+    return await this.transactionService.getAccountTransactions(accountId, from, to);
   }
   
   async activate(accountId: any) {

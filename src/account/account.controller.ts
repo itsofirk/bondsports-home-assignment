@@ -1,8 +1,9 @@
-import { Controller, Post, Body, Put, Param, Get, ParseIntPipe } from '@nestjs/common';
+import { Controller, Post, Body, Put, Get, Query } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { Account } from '../entities/account.entity';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { AmountDto } from './dto/amount.dto';
+import { GetByPeriodDto } from './dto/get-by-period.dto';
 import { AccountId } from '../common/decorators/account-id.decorator';
 
 
@@ -48,8 +49,9 @@ export class AccountController {
   }
 
   @Get(':accountId/transactions')
-  async getAccountTransactions(@AccountId() accountId) {
-    const transactions = await this.accountService.getAccountTransactions(accountId);
+  async getAccountTransactions(@AccountId() accountId, @Query() getByPeriodDto: GetByPeriodDto) {
+    const { startDate, endDate } = getByPeriodDto;
+    const transactions = await this.accountService.getAccountTransactions(accountId, startDate, endDate);
     return transactions.map(transaction => ({
       transactionId: transaction.transactionId,
       accountId: transaction.account.accountId,
