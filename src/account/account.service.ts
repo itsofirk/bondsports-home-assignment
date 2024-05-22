@@ -37,24 +37,20 @@ export class AccountService {
     const account = await this.accountRepository.findOneBy({ accountId });
     if (!account) throw new Error('Account not found');
     
-    if (account.activeFlag){
-       // TODO: log that account is already active
-       return account
-    }
-    account.activeFlag = true;
-    return this.accountRepository.save(account);
+    if (!account.activeFlag){
+       account.activeFlag = true;
+       this.accountRepository.save(account);
+      }
   }
 
   async deactivate(accountId: any) {
     const account = await this.accountRepository.findOneBy({ accountId });
     if (!account) throw new Error('Account not found');
     
-    if (!account.activeFlag){
-       // TODO: log that account is already inactive
-       return account;
+    if (account.activeFlag){
+      account.activeFlag = false;
+      this.accountRepository.save(account);
     }
-    account.activeFlag = false;
-    return this.accountRepository.save(account);
   }
 
   async getBalance(accountId: any): Promise<number> {
