@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, Min } from 'class-validator';
+import { IsBoolean, IsEmpty, IsNotEmpty, IsNumber, Min } from 'class-validator';
 
 export class CreateAccountDto {
   @IsNotEmpty()
@@ -11,4 +11,13 @@ export class CreateAccountDto {
   @IsNumber()
   @Min(0)
   dailyWithdrawalLimit: number = 0;
+
+  @IsBoolean()
+  activeFlag: boolean = true;
+
+  @IsNumber()
+  accountType: number = 1;  // TODO: use enum
+
+  @IsEmpty({ message: 'createDate is not allowed' })
+  createDate: Date;
 }
