@@ -26,8 +26,11 @@ export class AccountService {
     return this.accountRepository.save(account);
   }
 
-  getAccountTransactions(accountId: any): Transaction[] | PromiseLike<Transaction[]> {
-    throw new Error('Method not implemented.');
+  async getAccountTransactions(accountId: any): Promise<Transaction[]> {
+    const account = await this.accountRepository.findOneBy({ accountId });
+    if (!account) throw new Error('Account not found');
+    
+    return await this.transactionService.getAccountTransactions(accountId);
   }
   
   async activate(accountId: any) {

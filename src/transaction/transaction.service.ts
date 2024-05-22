@@ -33,4 +33,11 @@ export class TransactionService {
     });
     return manager.save(Transaction, transaction);
   }
+
+  async getAccountTransactions(accountId: any): Promise<Transaction[]> {
+    return await this.transactionRepository.find({
+       where: { account: { accountId } },
+       relations: ['account'],
+      });
+  }
 }
