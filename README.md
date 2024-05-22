@@ -1,73 +1,119 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Account Management System
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Overview
+This project implements a basic account management system using NestJS and TypeScript. It includes functionalities for creating accounts, making deposits, withdrawing funds, and viewing account statements.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Getting Started
 
-## Description
+### Prerequisites
+- Node.js (v14 or later)
+- npm (v6 or later)
+- PostgreSQL
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Installation
 
-## Installation
+1. **Clone the repository:**
+    ```bash
+    git clone https://github.com/yourusername/account-management-system.git
+    cd account-management-system
+    ```
 
-```bash
-$ npm install
-```
+2. **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-## Running the app
+3. **For local environment - set up the database:**
+    - Run a PostgreSQL container:
+      ```bash
+      docker run --name accounts-db -e POSTGRES_PASSWORD=yourpassword -e POSTGRES_USER=youruser -e POSTGRES_DB=accountdb -p 5432:5432 -d postgres
+      ```
+    - Apply the database schema (if using TypeORM migrations or a schema synchronization script).
 
-```bash
-# development
-$ npm run start
+### Configuration
+- Copy the `.env.example` file to `.env` and update the environment variables as needed:
+    ```bash
+    cp .env.example .env
+    ```
 
-# watch mode
-$ npm run start:dev
+### Running the Application
 
-# production mode
-$ npm run start:prod
-```
+1. **Development Mode:**
+    ```bash
+    npm run start:dev
+    ```
 
-## Test
+2. **Production Mode:**
+    ```bash
+    npm run build
+    npm run start:prod
+    ```
 
-```bash
-# unit tests
-$ npm run test
+### API Endpoints
 
-# e2e tests
-$ npm run test:e2e
+#### Create Account
+- **URL:** `POST /accounts`
+- **Body:**
+    ```json
+    {
+        "personId": number,
+        "balance": number,
+        "dailyWithdrawalLimit": number
+    }
+    ```
+- **Description:** Create a new account
 
-# test coverage
-$ npm run test:cov
-```
+#### Deposit
+- **URL:** `POST /accounts/:accountId/deposit`
+- **Body:**
+    ```json
+    {
+        "amount": number
+    }
+    ```
+- **Description:** Deposit money into an account
 
-## Support
+#### Withdraw
+- **URL:** `POST /accounts/:accountId/withdraw`
+- **Body:**
+    ```json
+    {
+        "amount": number
+    }
+    ```
+- **Description:** Withdraw money from an account
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+#### Get Balance
+- **URL:** `GET /accounts/:accountId/balance`
+- **Description:** Get the balance of an account
 
-## Stay in touch
+#### Get Statement
+- **URL:** `GET /accounts/:accountId/transactions`
+- **Query Parameters:**
+    - `startDate` (optional) - in `YYYY-MM-DDTHH:mm:ssZ` format
+    - `endDate` (optional) - in `YYYY-MM-DDTHH:mm:ssZ` format
+- **Description:** Get the statement of an account
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+#### Activate
+- **URL:** `PUT /accounts/:accountId/activate`
+- **Description:** Activate an account
 
-## License
+#### Deactivate
+- **URL:** `PUT /accounts/:accountId/deactivate`
+- **Description:** Deactivate an account
 
-Nest is [MIT licensed](LICENSE).
+### Running Tests
+- **Unit Tests:**
+    ```bash
+    npm run test
+    ```
+
+### Project Structure
+
+Project structure is as follows:
+
+- `src/entities`: Contains the entity definitions.
+- `src/account`: Contains the account management logic, service, and controller.
+- `src/transaction`: Contains the transaction service.
+- `src/common`: Contains common utility functions.
+- `src/common/decorators`: Contains decorators.
