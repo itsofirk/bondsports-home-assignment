@@ -14,7 +14,7 @@ This project implements a basic account management system using NestJS and TypeS
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/account-management-system.git
+    git clone https://github.com/itsofirk/account-management-system.git
     cd account-management-system
     ```
 
