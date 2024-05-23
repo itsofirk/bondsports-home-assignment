@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Account } from './account.entity';
-import { DecimalColumn } from 'src/common/decorators/decimal-column.decorator';
+import { DecimalColumn } from '../common/decorators/decimal-column.decorator';
 
 @Entity('transactions')
 export class Transaction {
