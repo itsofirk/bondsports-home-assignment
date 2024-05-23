@@ -26,6 +26,7 @@ describe('TransactionService', () => {
 
   describe('getAccountTransactions', () => {
     it('should return transactions for a given account', async () => {
+      // arrange
       const accountId = 1;
 
       const transactions = [
@@ -35,8 +36,10 @@ describe('TransactionService', () => {
 
       jest.spyOn(transactionRepository, 'find').mockResolvedValue(transactions);
 
+      // act
       const result = await service.getAccountTransactions(accountId);
 
+      // assertions
       expect(result).toEqual(transactions);
       expect(transactionRepository.find).toHaveBeenCalledWith({
         where: {
@@ -48,13 +51,16 @@ describe('TransactionService', () => {
     });
 
     it('should call transactionRepository.find with Date(0) and Date() when from and to are not provided', async () => {
+      // arrange
       const accountId = 1;
       const mockTransactions = [];
 
       jest.spyOn(transactionRepository, 'find').mockResolvedValue(mockTransactions);
 
+      // act
       await service.getAccountTransactions(accountId);
 
+      // assertions
       expect(transactionRepository.find).toHaveBeenCalledWith({
         where: {
           account: { accountId },
@@ -65,6 +71,7 @@ describe('TransactionService', () => {
     });
 
     it('should call transactionRepository.find with provided from and to dates', async () => {
+      // arrange
       const accountId = 1;
       const from = new Date('2023-01-01');
       const to = new Date('2023-12-31');
@@ -72,8 +79,10 @@ describe('TransactionService', () => {
 
       jest.spyOn(transactionRepository, 'find').mockResolvedValue(mockTransactions);
 
+      // act
       await service.getAccountTransactions(accountId, from, to);
 
+      // assertions
       expect(transactionRepository.find).toHaveBeenCalledWith({
         where: {
           account: { accountId },
@@ -84,24 +93,29 @@ describe('TransactionService', () => {
     });
 
     it('should return an empty array if no transactions are found', async () => {
+      // arrange
       const accountId = 1;
       const from = new Date('2023-01-01');
       const to = new Date('2023-12-31');
 
       jest.spyOn(transactionRepository, 'find').mockResolvedValue([]);
 
+      // act
       const result = await service.getAccountTransactions(accountId, from, to);
 
+      // assertions
       expect(result).toEqual([]);
     });
 
     it('should handle errors thrown by transactionRepository.find', async () => {
+      // arrange
       const accountId = 1;
       const from = new Date('2023-01-01');
       const to = new Date('2023-12-31');
 
       jest.spyOn(transactionRepository, 'find').mockRejectedValue(new Error('Database error'));
 
+      // act and assertions
       await expect(service.getAccountTransactions(accountId, from, to)).rejects.toThrow('Database error');
     });
   });
